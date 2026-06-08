@@ -1,45 +1,65 @@
 
 
-
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MaterialApp(home: EmptyStateExercise()));
+  runApp(const MaterialApp(home: TaskCardExercise()));
 }
 
-class EmptyStateExercise extends StatelessWidget {
-  const EmptyStateExercise({super.key});
+class TaskCardExercise extends StatelessWidget {
+  const TaskCardExercise({super.key});
 
-  @override   
+  @override
   Widget build(BuildContext context) {
+    const completed = true;
+
     return Scaffold(
       backgroundColor: const Color(0xfff4f6fb),
-      body: const Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.inbox_rounded,
-              size: 64,
-              color: Colors.grey
-            ),
-            SizedBox(height: 14),
-            Text(
-              'No tasks yet',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+      body: Center(
+        child: Container(
+          margin: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 12,
+                offset: const Offset(0, 6)
               )
-            ),
-            SizedBox(height: 6),
-            Text(
-              'Add your first task above.',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 16
+            ]
+          ),
+          child: Row(
+            children: [
+              Checkbox(
+                value: completed,
+                onChanged: (_) {},
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6)
+                )
+              ),
+              const Expanded(
+                child: Text(
+                  'Study Flutter UI',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    decoration: TextDecoration.lineThrough,
+                    color: Colors.grey
+                  )
+                )
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.edit_rounded, color: Colors.indigo,)
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.delete_rounded, color: Colors.redAccent) 
               )
-            )
-          ],
+            ],
+          )
         )
       )
     );
