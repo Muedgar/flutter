@@ -1,68 +1,54 @@
 import 'package:flutter/material.dart';
 
-class Todo {
-    final String id;
-    final String title;
-    bool completed;
-
-    Todo({required this.id, required this.title, required this.completed});
+void main() {
+  runApp(const MaterialApp(home: Example2()));
 }
 
-class TodoPage extends StatefulWidget {
-    const TodoPage({super.key});
+class Example2 extends StatefulWidget {
+  const Example2({super.key});
 
-    @override  
-    State<TodoPage> createState() => _TodoPageState();
+  @override  
+  State<Example2> createState() => _Example2State();
 }
 
-class _TodoPageState extends State<TodoPage> {
+class _Example2State extends State<Example2> {
+  final controller = TextEditingController();
 
-    TextEditingController controller = TextEditingController();
+  List<String> tasks = [];
 
-    List<Todo> todos = [
-        Todo(completed: true, id: '1', title: 'dkfjs')
-    ];
+  void addTask() {
+    setState(() {
+      tasks.add(controller.text);
+      controller.clear();
+    });
+  }
 
-    void addTodo() {
+  @override  
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            TextField(controller: controller),
+            ElevatedButton(
+              onPressed: addTask,
+              child: const Text("Add")
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: tasks.length,
+                itemBuilder: (_, index) {
+                  return ListTile(
+                    title: Text(tasks[index])
+                  );
+                }
+              )
+            )
+          ],
+        )
+      )
+    );
+  }
 
-    }
-
-    void toggle(Todo todo, bool? value) {
-        setState(() {
-            todo.completed = value ?? false;
-        });
-    }
-
-    @override
-    Widget build (BuildContext context) {
-        return Column(
-            children: [
-                Row(
-                    children: [
-                        TextField(
-                    controller: controller
-                ),
-                ElevatedButton(onPressed: addTodo, child: Text('Add todo'))
-                    ],
-                ),
-                ListView.builder(
-                    itemCount: todos.length,
-                    itemBuilder: (_, index) {
-                        final todo = todos[index];
-
-                        return CheckboxListTile(
-                            value: todo.completed,
-                            onChanged: (value) => toggle(todo, value),
-                            title: Text(
-                                todo.title,
-                                style: TextStyle(
-                                    decoration: todo.completed ? TextDecoration.lineThrough : null
-                                ) 
-                            )
-                        );
-                    }
-                    )
-            ],
-        );
-    }
 }
