@@ -1,111 +1,55 @@
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(home: HeaderExerciseTwo()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class HeaderExerciseTwo extends StatelessWidget {
+  const HeaderExerciseTwo({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(home: TodoPage());
-  }
-}
-
-class Todo {
-  final String id;
-  final String title;
-  bool completed;
-
-  Todo({required this.id, required this.title, required this.completed});
-}
-
-class TodoPage extends StatefulWidget {
-  const TodoPage({super.key});
-
-  @override
-  State<TodoPage> createState() => _TodoPageState();
-}
-
-class _TodoPageState extends State<TodoPage> {
-  final TextEditingController controller = TextEditingController();
-
-  List<Todo> todos = [
-    Todo(id: '1', title: 'Breakfast', completed: false),
-    Todo(id: '2', title: 'Lunch', completed: false),
-    Todo(id: '3', title: 'Dinner', completed: false),
-  ];
-
-  void addTodo() {
-    final title = controller.text.trim();
-    if (title.isEmpty) return;
-
-    setState(() {
-      todos.add(
-        Todo(
-          id: DateTime.now().microsecondsSinceEpoch.toString(),
-          title: title,
-          completed: false,
-        ),
-      );
-      controller.clear();
-    });
-  }
-
-  void editTodo() {}
-
-  void deleteTodo(Todo todo) {
-    setState(() {
-      todos.removeWhere((item) => item.id == todo.id);
-    });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
+  @override 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Todo')),
-      body: Column(
-        children: [
-          Row(
+      backgroundColor: const Color.fromARGB(255, 191, 199, 219),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
             children: [
-              Expanded(child: TextField(controller: controller)),
-              ElevatedButton(onPressed: addTodo, child: const Text('Add Todo')),
-            ],
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: todos.length,
-              itemBuilder: (_, index) {
-                final todo = todos[index];
-
-                return ListTile(
-                  title: Text(todo.title),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: editTodo,
-                        icon: const Icon(Icons.edit),
-                      ),
-                      IconButton(
-                        onPressed: () => deleteTodo(todo),
-                        icon: const Icon(Icons.delete),
-                      ),
-                    ],
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Colors.indigo,
+                  borderRadius: BorderRadius.circular(18)
+                ),
+                child: const Icon(
+                  Icons.checklist_rounded,
+                  color: Colors.white,
+                  size: 30
+                )
+              ),
+              const SizedBox(width: 14),
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'My Tasks',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    )
                   ),
-                );
-              },
-            ),
+                  Text(
+                    'Stay organized today',
+                    style: TextStyle(color: Colors.grey)
+                  )
+                ]
+              )
+            ]
           ),
-        ],
-      ),
+        )
+      )
     );
   }
 }
