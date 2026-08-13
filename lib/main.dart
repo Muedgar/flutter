@@ -1,44 +1,71 @@
 
-
 import 'package:flutter/material.dart';
 
-class CalculatorApp extends StatelessWidget {
-  const CalculatorApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Calculator',
-      theme: ThemeData(
-        useMaterial3: true,
-        scaffoldBackgroundColor: AppColors.lightYellow,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: AppColors.black
-        )
-      ),
-      home: const CalculatorContainer() 
-    );
-  }
+void main() {
+  runApp(MaterialApp(home: TodoPage(),));
 }
 
-class CalculatorContainer extends StatelessWidget {
-  const CalculatorContainer({super.key});
+class Todo {
+    String id;
+    String title;
+    bool completed;
 
-  @override 
-  Widget build(BuildContext context) {
-    // final screenWidth = MediaQuery.of(context).size.width;
-
-    return SafeArea(
-      top: false,
-      child: SingleChildScrollView()
-    );
-  }
+    Todo({required this.id, required this.title, required this.completed});
 }
 
+class TodoPage extends StatefulWidget {
+    const TodoPage({super.key});
 
-class AppColors {
-  static const lightYellow = Color.fromARGB(57, 221, 225, 160);
-  static const black = Color.fromARGB(105, 19, 20, 29);
-  static const grey = Color.fromARGB(49, 129, 126, 125);
+    @override
+    State<TodoPage> createState() => _TodoPageState();
+}
+
+class _TodoPageState extends State<TodoPage> {
+    List<Todo> todos = [
+        Todo(id: DateTime.now().toString(), title: 'Cook', completed: false)
+    ];
+
+    
+
+    
+
+    @override
+    Widget build(BuildContext context) {
+        TextEditingController controller = TextEditingController();
+void addTodo() {
+        setState(() {
+            todos.add(Todo(id: DateTime.now().toString(), title: controller.text, completed: false));
+        });
+    }
+        return Scaffold(
+            appBar: AppBar(
+                title: Text('Todo'),
+            ),
+            body: Padding(
+                padding: EdgeInsets.all(4),
+                child: Column(
+                    children: [
+                        Row(
+                            children: [
+                                Expanded(
+                                child: TextField(controller: controller)
+                            ),
+                            ElevatedButton(child: Text('Add todo'), onPressed: () => addTodo(),)
+                            ],
+                        ),
+                        Expanded(
+                            child: ListView.builder(
+                                itemCount: todos.length,
+                                itemBuilder:(_, index) {
+                                  Todo todo = todos[index];
+                                  return ListTile(
+                                    title: Text(todo.title),
+                                  );
+                                },)
+                        )
+                    ],
+                ),
+            ),
+        );
+    }
 }
